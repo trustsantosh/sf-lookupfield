@@ -10,7 +10,6 @@ export default class SfCustomLookupField extends LightningElement {
   @api fieldValueRecordName;
   @api isReadonly = false;
   @api isRequired = false;
-  @api isDisabled = false;
   @api fieldHelpText;
   @api lookupFilter;
   @api fieldList = [];
@@ -23,7 +22,6 @@ export default class SfCustomLookupField extends LightningElement {
   @track isCase;
   @track lookupValueSelected = false;
   @track selectedValue = {};
-  defaultFieldList = ["Id", "Name"];
 
   lookupDetails;
   selectedLookupObjectAPIName;
@@ -41,7 +39,7 @@ export default class SfCustomLookupField extends LightningElement {
         ) {
           this.showMultipleObject = true;
           this.objectList.push({ label: "Users", value: "User" });
-          this.objectList.push({label:'Groups',value:'Group-PG'});
+          this.objectList.push({ label: "Groups", value: "Group-PG" });
           this.objectList.push({ label: "Queues", value: "Group-Q" });
           this.initalObjectSelected = this.objectList[0].value;
           this.fieldPlaceHolder = "Search " + this.objectList[0].label + "...";
@@ -79,21 +77,6 @@ export default class SfCustomLookupField extends LightningElement {
     }
   }
 
-  connectedCallback() {
-    if (this.fieldList.length > 0) {
-      this.defaultFieldList.forEach((field) => {
-        if (
-          !this.fieldList.some((entry) => {
-            return field === entry;
-          })
-        ) {
-          this.fieldList.push(field);
-        }
-      });
-    } else {
-        this.fieldList = this.fieldList.concat(this.defaultFieldList);
-    }
-  }
 
   handleDropDownChange(event) {
     this.selectedValue = {};
@@ -128,7 +111,40 @@ export default class SfCustomLookupField extends LightningElement {
               Array.isArray(result.lookupDataList) &&
               result.lookupDataList.length > 0
             ) {
-              this.lookupResults = result.lookupDataList;
+              //this.lookupResults = result.lookupDataList;
+              let lookupResults=[];
+              result.lookupDataList.forEach((record) => {
+                let recordDetail = [];
+                this.fieldList.forEach((field) => {
+                  if (record[field]){
+                    recordDetail.push({
+                      fieldName: field,
+                      fieldValue: record[field]
+                    });
+                  }else{
+                    if(record[field]===false){
+                      recordDetail.push({
+                        fieldName: field,
+                        fieldValue: false
+                      });
+                    }else{
+                      recordDetail.push({
+                        fieldName: field,
+                        fieldValue: ''
+                      });
+                    }
+                      
+                  }
+                   
+                });
+
+                lookupResults.push({
+                  Id: record.Id,
+                  Name: this.selectedLookupObjectAPIName == 'Case' ? record.Subject:record.Name,
+                  fieldValues: recordDetail
+                });
+              });
+              this.lookupResults = lookupResults;
               let inputCmp = this.template.querySelector(".lookupInput");
               inputCmp.setCustomValidity("");
               inputCmp.reportValidity();

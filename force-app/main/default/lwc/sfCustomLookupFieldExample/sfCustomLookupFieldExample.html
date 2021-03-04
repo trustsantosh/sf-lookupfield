@@ -1,4 +1,40 @@
 <template>
-    <c-sf-custom-lookup-field object-api-name="Task" object-field-api-name="OwnerId" ></c-sf-custom-lookup-field>
-    
+  <c-sf-custom-lookup-field
+    object-api-name="Task"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    field-list={fieldList}
+  ></c-sf-custom-lookup-field>
+  <c-sf-custom-lookup-field
+    object-api-name="Task"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    lookup-filter="Name like 'SF%' OR  UserType = 'Standard'"
+  ></c-sf-custom-lookup-field>
+  <c-sf-custom-lookup-field
+    object-api-name="Task"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    is-required="true"
+  ></c-sf-custom-lookup-field>
+  <c-sf-custom-lookup-field
+    object-api-name="Task"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    is-readonly="true"
+  ></c-sf-custom-lookup-field>
+  <c-sf-custom-lookup-field
+    object-api-name="Task"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    is-required="true"
+    is-readonly="true"
+  ></c-sf-custom-lookup-field>
+  <c-sf-custom-lookup-field
+    object-api-name="Case"
+    object-field-api-name="OwnerId"
+    field-label="Assigned To"
+    field-value-record-id={userId}
+    field-value-record-name={userName}
+  ></c-sf-custom-lookup-field>
 </template>
