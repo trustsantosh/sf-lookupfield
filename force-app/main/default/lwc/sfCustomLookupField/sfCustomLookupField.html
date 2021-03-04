@@ -1,0 +1,108 @@
+<template>
+
+    <lightning-layout horizontal-align="spread" multiple-rows="true">
+        <template if:true={isReadonly}>
+            
+            <lightning-layout-item size="12">
+                <template if:true={isRequired}>
+                    <lightning-input  class="lookupInput"  value={selectedValue.recordName} label={fieldLabel} required readonly></lightning-input>
+                </template>
+                <template if:false={isRequired}>
+                    <lightning-input  class="lookupInput"  value={selectedValue.recordName} label={fieldLabel}  readonly></lightning-input>
+                </template>
+                
+            </lightning-layout-item>
+        </template>
+        <template if:false={isReadonly}>
+            
+            <template if:true={lookupValueSelected}>
+                
+                <lightning-layout-item size="11">
+                    <template if:true={isRequired}>
+                        <lightning-input  class="lookupInput"  value={selectedValue.recordName} label={fieldLabel} required disabled ></lightning-input>
+                    </template>
+                    <template if:false={isRequired}>
+                        <lightning-input  class="lookupInput"  value={selectedValue.recordName} label={fieldLabel} disabled ></lightning-input>
+                    </template>                    
+                </lightning-layout-item>
+                <lightning-layout-item size="1" alignment-bump="top">
+                    <lightning-button-icon
+                        icon-name="utility:close"
+                        variant="border-filled"
+                        onclick={handleClearLookup}
+                        alternative-text="Clear value">
+                    </lightning-button-icon>
+                </lightning-layout-item>
+
+
+            </template>
+            <template if:false={lookupValueSelected}>
+                <template if:true={showMultipleObject}>            
+                    <lightning-layout-item size="12">
+                        <template if:true={isRequired}>
+                            <abbr class="required">*</abbr>{fieldLabel}
+                        </template>
+                        <template if:false={isRequired}>
+                            {fieldLabel}
+                        </template>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="2">
+                        <lightning-combobox value={initalObjectSelected} onchange={handleDropDownChange} options={objectList} label=""></lightning-combobox>
+                    </lightning-layout-item>
+                    <lightning-layout-item size="10">
+                        <lightning-input class="lookupInput" onchange={handleInputChange}  placeholder={fieldPlaceHolder} label=""></lightning-input>
+                    </lightning-layout-item>                
+                </template>
+
+                <template if:false={showMultipleObject}>        
+                    <lightning-layout-item size="12">
+                        <template if:true={isRequired}>
+                            <lightning-input class="lookupInput" onchange={handleInputChange} required  placeholder={fieldPlaceHolder} label={fieldLabel}></lightning-input>
+                        </template>
+                        <template if:false={isRequired}>
+                            <lightning-input class="lookupInput" onchange={handleInputChange}  placeholder={fieldPlaceHolder} label={fieldLabel}></lightning-input>
+                        </template>
+                        
+                    </lightning-layout-item>
+                </template>
+
+                <lightning-layout-item size="12">
+                    <template if:true={hasLookupResult}>
+                        <div class=" lgc-bg">
+                            <ul class="slds-has-dividers_bottom-space">
+                                <template if:true={isCase}>
+                                    <template for:each={lookupResults} for:item="lookupResult">                        
+                                        <li data-record-id={lookupResult.Id} data-record-name={lookupResult.CaseNumber} key={lookupResult.Id} class="slds-item" onclick={handleLookupSelection}>
+                                            <lightning-tile label={lookupResult.CaseNumber} href="javascript:void(0);" >
+                                                <p class="slds-truncate" title={lookupResult.Subject}>{lookupResult.Subject}</p>
+                                            </lightning-tile>
+                                        </li>
+                                    </template>
+                                </template>  
+                                <template if:false={isCase}>
+                                    <template for:each={lookupResults} for:item="lookupResult">                        
+                                        <li data-record-id={lookupResult.Id} data-record-name={lookupResult.Name} key={lookupResult.Id} class="slds-item" onclick={handleLookupSelection}>
+                                            <lightning-tile label={lookupResult.Name}  href="javascript:void(0);">                                
+                                            </lightning-tile>
+                                        </li>
+                                    </template>
+                                </template> 
+                                
+                            </ul>
+                        </div>            
+                        </template>      
+                    
+                </lightning-layout-item>
+                
+            </template>
+        </template>
+       
+    </lightning-layout>
+
+    
+           
+
+    
+   
+    
+</template>
