@@ -48,6 +48,11 @@ public with sharing class SF_ObjectFieldController {
                 returnWrapper.message = 'Search string is empty !';
                 return returnWrapper;
             }
+            if(objAPIName=='Case' && !fieldList.contains('Subject'))
+                fieldList.add('Subject');
+            if(objAPIName!='Case' && !fieldList.contains('Name'))
+                fieldList.add('Name');
+                
                 String searchquery='FIND \''+inputString+'\''; 
                 switch on objAPIName{                    
                     when 'Group-PG'{
